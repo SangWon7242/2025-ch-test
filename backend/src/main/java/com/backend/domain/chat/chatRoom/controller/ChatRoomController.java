@@ -4,12 +4,14 @@ import com.backend.domain.chat.chatRoom.entity.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,5 +44,22 @@ public class ChatRoomController {
   @GetMapping
   public List<ChatRoom> getChatRooms() {
     return chatRooms;
+  }
+
+  @GetMapping("/{id}")
+  public ChatRoom getChatRoom(@PathVariable long id) {
+    Optional<ChatRoom> opChatRoom = findBy(id);
+
+    if(opChatRoom.isEmpty()) {
+      throw new RuntimeException("%d번 데이터는 없습니다.".formatted(id));
+    }
+
+    return opChatRoom.get();
+  }
+
+  private Optional<ChatRoom> findBy(long id) {
+    return chatRooms.stream()
+        .filter(chatRoom -> chatRoom.getId() == id)
+        .findFirst();
   }
 }
