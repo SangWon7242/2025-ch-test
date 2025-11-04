@@ -16,7 +16,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 @RestController // @Controller + @ResponseBody
-@RequestMapping("/api/v1/chat/room")
+@RequestMapping("/api/v1/chat/rooms")
 public class ChatRoomController {
   private final List<ChatRoom> chatRooms = new ArrayList<>() {{
     add(ChatRoom.builder()
